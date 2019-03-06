@@ -19,7 +19,7 @@ class CodePushScreen extends Component {
   }
 
   componentWillMount() {
-    let codePushKey = Platform.OS === 'ios' ? Config.CODEPUSH_KEY_ANDROID : Config.CODEPUSH_KEY_IOS;
+   let codePushKey = Platform.OS === 'ios' ? Config.CODEPUSH_KEY_ANDROID : Config.CODEPUSH_KEY_IOS;
     if (Config.LOCAL !== 'true') {
       CodePush.sync(
           {
@@ -33,6 +33,8 @@ class CodePushScreen extends Component {
           this.codePushStatusDidChange,
           this.codePushDownloadDidProgress,
       );
+    } else {
+      this.navigateToAuthScreen();
     }
   }
 

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import Config from 'react-native-config';
 import { Button } from "react-native-elements";
 import { LoginManager } from "react-native-fbsdk";
 import Icon from 'react-native-vector-icons/FontAwesome';
