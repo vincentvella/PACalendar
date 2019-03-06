@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+echo "STARTED PRE-BUILD"
+echo "API_KEY=$API_KEY" >> .env
+echo "AUTH_DOMAIN=$AUTH_DOMAIN" >> .env
+echo "DATABASE_URL=$DATABASE_URL" >> .env
+echo "PROJECT_ID=$PROJECT_ID" >> .env
+echo "STORAGE_BUCKET=$STORAGE_BUCKET" >> .env
+echo "MESSAGING_SENDER_ID=$MESSAGING_SENDER_ID" >> .env
+echo "CODEPUSH_KEY=$CODEPUSH_KEY" >> .env
+
+./scripts/create-appcenter-config.sh $APPCENTER_SOURCE_DIRECTORY $IOS_APP_SECRET
+./scripts/create-google-service-config.sh $APPCENTER_SOURCE_DIRECTORY $ADD_UNIT_ID_BANNER $ADD_UNIT_INTERSTITIAL $CLIENT_ID $REVERSED_CLIENT_ID $API_KEY $MESSAGING_SENDER_ID $BUNDLE_ID $PROJECT_ID $STORAGE_BUCKET $GOOGLE_APP_ID $DATABASE_URL
+
+echo "$GOOGLE_SERVICES" >> $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
+echo "$APPCENTER_CONFIG" >> $APPCENTER_SOURCE_DIRECTORY/android/app/src/main/assets/appcenter-config.json
