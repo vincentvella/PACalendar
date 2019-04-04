@@ -31,93 +31,111 @@ class Listing extends Component {
 
   //<editor-fold desc="Static Render Methods">
   static renderColumns(tag, value) {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={{ flex: 2, flexDirection: 'column' }}>
-          <Text style={{ paddingBottom: 15 }}>{tag}</Text>
+    if (value) {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 2, flexDirection: 'column' }}>
+            <Text style={{ paddingBottom: 15 }}>{tag}</Text>
+          </View>
+          <View style={{ flex: 5, flexDirection: 'column' }}>
+            <Text style={{ paddingBottom: 15 }}>{value}</Text>
+          </View>
         </View>
-        <View style={{ flex: 5, flexDirection: 'column' }}>
-          <Text style={{ paddingBottom: 15 }}>{value}</Text>
-        </View>
-      </View>
-    );
+      );
+    }
+    return null;
   }
 
   static renderWhen(startDateTime, endDateTime) {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={{ flex: 2, flexDirection: 'column' }}>
-          <Text style={{ paddingBottom: 15 }}>When:</Text>
-        </View>
-        <View style={{ flex: 5, flexDirection: 'column' }}>
-          {startDateTime.format('YYYY-MM-DD') !== endDateTime.format('YYYY-MM-DD') ?
+    if (startDateTime && endDateTime) {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 2, flexDirection: 'column' }}>
+            <Text style={{ paddingBottom: 15 }}>When:</Text>
+          </View>
+          <View style={{ flex: 5, flexDirection: 'column' }}>
+            {startDateTime.format('YYYY-MM-DD') !== endDateTime.format('YYYY-MM-DD') ?
+              <Text
+                style={{ paddingBottom: 5 }}>{startDateTime.format('MMMM Do') + ` - ${endDateTime.format('Do YYYY')}`}</Text> :
+              <Text style={{ paddingBottom: 5 }}>{startDateTime.format('MMMM Do YYYY')}</Text>
+            }
             <Text
-              style={{ paddingBottom: 5 }}>{startDateTime.format('MMMM Do') + ` - ${endDateTime.format('Do YYYY')}`}</Text> :
-            <Text style={{ paddingBottom: 5 }}>{startDateTime.format('MMMM Do YYYY')}</Text>
-          }
-          <Text
-            style={{ paddingBottom: 15 }}>{startDateTime.format('h:mm a') + ' - ' + endDateTime.format('h:mm a')}</Text>
+              style={{ paddingBottom: 15 }}>{startDateTime.format('h:mm a') + ' - ' + endDateTime.format('h:mm a')}</Text>
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
+    return null;
   }
 
   static renderDescription(description) {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <View style={{ flex: 1, flexDirection: 'column' }}>
-          <Text style={{ paddingVertical: 15 }}>{description}</Text>
+    if (description) {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+            <Text style={{ paddingVertical: 15 }}>{description}</Text>
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
+    return null;
   }
 
   static renderSubtitle(subtitle) {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ fontSize: 14, paddingBottom: 15 }}>{subtitle}</Text>
-      </View>
-    );
+    if (subtitle) {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontSize: 14, paddingBottom: 15 }}>{subtitle}</Text>
+        </View>
+      );
+    }
+    return null;
   }
 
   static renderPaid(event) {
-    return (
-      <Fragment>
-        <Badge value={'Paid'} containerStyle={{ marginVertical: 5 }}/>
-        {event.available &&
-        <Badge
-          value={`Tickets ${event.available === 'yes' ? '' : 'Not'} Available at Door`}
-          containerStyle={{ marginVertical: 5 }}
-        />}
-        <View style={{ flexDirection: 'row', padding: 15 }}>
-          <View style={{ flex: 2, flexDirection: 'column' }}>
-            <Text>Ticket Details:</Text>
+    if (event.free && event.free === 'paid') {
+      return (
+        <Fragment>
+          <Badge value={'Paid'} containerStyle={{ marginVertical: 5 }} />
+          {event.available &&
+          <Badge
+            value={`Tickets ${event.available === 'yes' ? '' : 'Not'} Available at Door`}
+            containerStyle={{ marginVertical: 5 }}
+          />}
+          <View style={{ flexDirection: 'row', padding: 15 }}>
+            <View style={{ flex: 2, flexDirection: 'column' }}>
+              <Text>Ticket Details:</Text>
+            </View>
+            <View style={{ flex: 5, flexDirection: 'column' }}>
+              <Text>{event.ticketDetails}</Text>
+            </View>
           </View>
-          <View style={{ flex: 5, flexDirection: 'column' }}>
-            <Text>{event.ticketDetails}</Text>
+          {event.link &&
+          <View style={{ flexDirection: 'row', padding: 15 }}>
+            <View style={{ flex: 2, flexDirection: 'column' }}>
+              <Text>Ticket Link:</Text>
+            </View>
+            <View style={{ flex: 5, flexDirection: 'column' }}>
+              <Text style={{ color: 'blue', textDecorationLine: 'underline' }}
+                    onPress={() => Linking.openURL(`${event.link}`)}>{event.link}</Text>
+            </View>
           </View>
-        </View>
-        {event.link &&
-        <View style={{ flexDirection: 'row', padding: 15 }}>
-          <View style={{ flex: 2, flexDirection: 'column' }}>
-            <Text>Ticket Link:</Text>
-          </View>
-          <View style={{ flex: 5, flexDirection: 'column' }}>
-            <Text style={{ color: 'blue', textDecorationLine: 'underline' }}
-                  onPress={() => Linking.openURL(`${event.link}`)}>{event.link}</Text>
-          </View>
-        </View>
-        }
-      </Fragment>
-    );
+          }
+        </Fragment>
+      );
+    }
+    return null;
   }
 
   static renderTitle(title) {
-    return (
-      <View style={{ flexDirection: 'row' }}>
-        <Text style={{ fontSize: 22 }}>{title}</Text>
-      </View>
-    );
+    if (title) {
+      return (
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontSize: 22 }}>{title}</Text>
+        </View>
+      );
+    }
+    return null;
   }
 
   //</editor-fold>
@@ -135,12 +153,6 @@ class Listing extends Component {
         { key: 'share', title: 'Share' },
       ],
     };
-
-    Listing.renderWhen = Listing.renderWhen.bind(this);
-    Listing.renderTitle = Listing.renderTitle.bind(this);
-    Listing.renderColumns = Listing.renderColumns.bind(this);
-    Listing.renderSubtitle = Listing.renderSubtitle.bind(this);
-    Listing.renderDescription = Listing.renderDescription.bind(this);
 
     this.facebookShare = this.facebookShare.bind(this);
     this.addToCalendar = this.addToCalendar.bind(this);
@@ -191,37 +203,40 @@ class Listing extends Component {
   }
 
   renderImageOverlay(event) {
-    return (
-      <View>
-        <Modal visible={this.state.viewImageModal} onRequestClose={() => this.setState({ viewImageModal: false })}>
-          <ImageViewer
-            imageUrls={[{ url: event.url }]}
-            renderIndicator={() => <View/>}
-            renderHeader={() => (
-              <TouchableOpacity
-                style={{ paddingTop: 40, marginRight: 5, alignItems: 'flex-end' }}
-                onPress={() => {
-                  this.setState({ viewImageModal: false });
-                }}>
-                <Icon style={{ padding: 5 }} color='white' size={20} name='close'/>
-              </TouchableOpacity>
-            )}
-            loadingRender={() => (
-              <View style={{ height: height, alignSelf: 'center', justifyContent: 'center' }}>
-                <Spinner size={80} type={'FadingCircleAlt'} color={'#ffffff'}/>
-              </View>
-            )}
-          />
-        </Modal>
-        <TouchableOpacity onPress={() => this.setState({ viewImageModal: true })}>
-          <Image
-            resizeMode="contain"
-            style={{ height: 200, width: 250, alignSelf: 'center' }}
-            source={!!(event.url && event.url !== '') ? { uri: event.url } : {}}
-          />
-        </TouchableOpacity>
-      </View>
-    );
+    if (event.url) {
+      return (
+        <View>
+          <Modal visible={this.state.viewImageModal} onRequestClose={() => this.setState({ viewImageModal: false })}>
+            <ImageViewer
+              imageUrls={[{ url: event.url }]}
+              renderIndicator={() => <View />}
+              renderHeader={() => (
+                <TouchableOpacity
+                  style={{ paddingTop: 40, marginRight: 5, alignItems: 'flex-end' }}
+                  onPress={() => {
+                    this.setState({ viewImageModal: false });
+                  }}>
+                  <Icon style={{ padding: 5 }} color='white' size={20} name='close' />
+                </TouchableOpacity>
+              )}
+              loadingRender={() => (
+                <View style={{ height: height, alignSelf: 'center', justifyContent: 'center' }}>
+                  <Spinner size={80} type={'FadingCircleAlt'} color={'#ffffff'} />
+                </View>
+              )}
+            />
+          </Modal>
+          <TouchableOpacity onPress={() => this.setState({ viewImageModal: true })}>
+            <Image
+              resizeMode="contain"
+              style={{ height: 200, width: 250, alignSelf: 'center' }}
+              source={!!(event.url && event.url !== '') ? { uri: event.url } : {}}
+            />
+          </TouchableOpacity>
+        </View>
+      );
+    }
+    return null;
   }
 
 
@@ -244,20 +259,21 @@ class Listing extends Component {
         {event &&
         <ScrollView>
           <Card containerStyle={{ paddingTop: 5, padding: 0, marginBottom: 25, borderRadius: 10 }}>
-            {event.url && this.renderImageOverlay(event)}
+            <View>
+            {this.renderImageOverlay(event)}
             <View style={{ width: width * .8, flex: 1, padding: 15 }}>
-              {event.title && Listing.renderTitle(event.title)}
-              {event.subtitle && Listing.renderSubtitle(event.subtitle)}
+              {Listing.renderTitle(event.title)}
+              {Listing.renderSubtitle(event.subtitle)}
               <Divider/>
-              {event.description && Listing.renderDescription(event.description)}
-              {event.startDateTime && event.endDateTime && Listing.renderWhen(event.startDateTime, event.endDateTime)}
-              {event.location && Listing.renderColumns('Location:', event.location)}
-              {categories && Listing.renderColumns('Categories:', categories)}
+              {Listing.renderDescription(event.description)}
+              {Listing.renderWhen(event.startDateTime, event.endDateTime)}
+              {Listing.renderColumns('Location:', event.location)}
+              {Listing.renderColumns('Categories:', categories)}
             </View>
             <Divider />
             <View style={{ paddingTop: 10 }}>
-              {event.free && event.free === 'free' && <Badge value="Free"/>}
-              {event.free && event.free === 'paid' && Listing.renderPaid(event)}
+              {(event.free && event.free === 'free') ? <Badge value="Free"/> : null}
+              {Listing.renderPaid(event)}
             </View>
             <Divider />
             <View style={styles.buttonBar}>
@@ -295,6 +311,7 @@ class Listing extends Component {
               </Fragment>
               }
             </Fragment>
+            </View>
           </Card>
         </ScrollView>
         }
